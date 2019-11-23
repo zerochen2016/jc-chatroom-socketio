@@ -3,6 +3,7 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 
+
 app.get('/', function(req, res){
     res.sendFile(__dirname + '/index.html');
 });
@@ -14,6 +15,9 @@ io.on('connection', function(socket){
         console.log('message:' + msg)
         io.emit('chat message',msg);
     });
+    var tweets = setInterval(function () {
+        socket.volatile.emit('bieber tweet', "inter");
+      }, 1000);
 
     socket.on('disconnect', function(){
         console.log('user disconnected');
