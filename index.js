@@ -1,29 +1,25 @@
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
+const server = require('http').createServer();
 
-
-app.get('/', function(req, res){
-    res.sendFile(__dirname + '/index.html');
+const io = require('socket.io')(server, {
+     path: '',
+     serveClient: false,
+     pingInterval: 10000,
+     pingTimeout: 5000,
+     cookie: false
 });
+server.listen(3000);
 
 io.on('connection', function(socket){
-    console.log('a user connected');
-    socket.broadcast.emit('chat message',"enter");
-    socket.on('chat message', function(msg){
-        console.log('message:' + msg)
-        io.emit('chat message',msg);
+    console.log('connection');
+
+    socket.emit('chat','enter');
+
+    socket.on('chat', function(data){
+        console.log(data);
+        io.emit('chat',data);
     });
-    var tweets = setInterval(function () {
-        socket.volatile.emit('bieber tweet', "inter");
-      }, 1000);
 
     socket.on('disconnect', function(){
-        console.log('user disconnected');
+        console.log('disconnect');
     });
-});
-
-http.listen(port, function(){
-    console.log('listening on *: 3000');
 });
