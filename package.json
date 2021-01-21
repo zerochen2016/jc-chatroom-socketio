@@ -3,6 +3,6 @@
     "version": "1.0.0",
     "desceiption": "Chat room application written by node.js and socket.io. Support millions of concurrent",
     "dependencies": {
-        "socket.io": "^2.3.0"
+        "socket.io": "^2.4.0"
     }
 }
